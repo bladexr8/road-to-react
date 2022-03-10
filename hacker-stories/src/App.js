@@ -5,7 +5,8 @@ import React from 'react';
 // Top Level App Component
 const  App = () => {
 
-  const stories = [
+  // initial list of stories
+  const initialStories = [
     {
       title: 'React',
       url: 'https:/reactjs.org',
@@ -28,6 +29,10 @@ const  App = () => {
   // state property and setter function
   // using React useState() hook
   const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
+
+  // stories to render using state
+  const [stories, setStories] = React.useState(initialStories);
+
 
   // React useEffect hook to persist last
   // entered search term to local browser
