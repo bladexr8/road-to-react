@@ -1,6 +1,7 @@
 import React from 'react';
 
-
+// API Endpoint for Hacker News Stories
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 // Top Level App Component
 const  App = () => {
@@ -10,7 +11,7 @@ const  App = () => {
     {
       title: 'React',
       url: 'https:/reactjs.org',
-      author: 'Jordan Walke',
+      author: 'Jordan Walker',
       num_comments: 3,
       points: 4,
       objectID: 0,
@@ -26,39 +27,59 @@ const  App = () => {
   
   ];
 
-  // async loading of stories
-  const getAsyncStories = () => {
-    return new Promise((resolve) => {
-      setTimeout(
-        () => resolve({ data: { stories: initialStories }}),
-        2000
-      )
-    });
-  }
-
   // state property and setter function
   // using React useState() hook
   const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
 
+  // reducer for stories state (useReducer Hook)
+  const storiesReducer = (state, action) => {
+    switch (action.type) {
+      case 'STORIES_FETCH_INIT':
+        return {
+          ...state,
+          isLoading: true,
+          isError: false,
+        };
+      case 'STORIES_FETCH_SUCCESS':
+        return {
+          ...state,
+          isLoading: false,
+          isError: false,
+          data: action.payload,
+        };
+      case 'STORIES_FETCH_FAILURE':
+        return {
+          ...state,
+          isLoading: false,
+          isError: true,
+        }
+      default:
+        throw new Error();
+    }
+  }
+
   // stories to render using state
-  const [stories, setStories] = React.useState([]);
-
-  // page load state
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  // page error flag
-  const [isError, setIsError] = React.useState(false);
+  const [stories, dispatchStories] = React.useReducer(
+    storiesReducer, 
+    { data: [], isLoading: false, isError: false }
+  );
 
   // async data load
   React.useEffect(() => {
 
-    setIsLoading(true);
+    dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    getAsyncStories().then((result) => {
-      setStories(result.data.stories);
-      setIsLoading(false);
+    fetch(`${API_ENDPOINT}react`)
+      .then((response) => response.json())
+      .then((result) => {
+        dispatchStories({
+          type: 'STORIES_FETCH_SUCCESS',
+          payload: result.hits,
+        })
     })
-    .catch(() => setIsError(true));
+    .catch(() => {
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
+    })
   },[]);
 
 
@@ -81,7 +102,7 @@ const  App = () => {
 
   // filter stories based on search term entered
   // in Search component
-  const searchedStories = stories.filter((story) => {
+  const searchedStories = stories.data.filter((story) => {
     return story.title.toLowerCase().includes(searchTerm.toLowerCase());
   })
 
@@ -102,9 +123,9 @@ const  App = () => {
       {/* render the list here */}
       {/* and by the way: that's how you do comments in JSX */}
 
-      {isError && <p>Something went wrong...</p>}
+      {stories.isError && <p>Something went wrong...</p>}
 
-      {isLoading ? (
+      {stories.isLoading ? (
         <p>Loading...</p>
       ) : (
         <List list={searchedStories} />
