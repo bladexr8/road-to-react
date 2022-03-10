@@ -43,11 +43,22 @@ const  App = () => {
   // stories to render using state
   const [stories, setStories] = React.useState([]);
 
+  // page load state
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  // page error flag
+  const [isError, setIsError] = React.useState(false);
+
   // async data load
   React.useEffect(() => {
+
+    setIsLoading(true);
+
     getAsyncStories().then((result) => {
       setStories(result.data.stories);
+      setIsLoading(false);
     })
+    .catch(() => setIsError(true));
   },[]);
 
 
@@ -91,8 +102,14 @@ const  App = () => {
       {/* render the list here */}
       {/* and by the way: that's how you do comments in JSX */}
 
-      <List list={searchedStories} />
-    
+      {isError && <p>Something went wrong...</p>}
+
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <List list={searchedStories} />
+      )}
+
     </div>
   );
 }
