@@ -24,7 +24,19 @@ const  App = () => {
 
   // state property and setter function
   // using React useState() hook
-  const [searchTerm, setSearchTerm] = React.useState('React');
+  const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
+
+  // React useEffect hook to persist last
+  // entered search term to local browser
+  // storage
+  // first argument is a function to run side-effect
+  // second argument is a dependency array of variables
+  // i.e. if one of these variables changes the side-effect
+  // function is run
+  React.useEffect(() => {
+    // persist to local browser storage
+    localStorage.setItem('search', searchTerm);
+  }, [searchTerm]);
 
   // handler for when a search term is entered
   const handleSearch = (event) => {
