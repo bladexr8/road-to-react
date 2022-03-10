@@ -1,5 +1,8 @@
 import React from 'react';
 
+
+
+// Top Level App Component
 const  App = () => {
 
   const stories = [
@@ -68,21 +71,25 @@ const  App = () => {
   );
 }
 
+/*********************************************************************************** */
+
 // Search Component
 const Search = (props) => {
 
   // use object destructuring on props
   const { search, onSearch } = props;
 
+  // return a React Fragment
   return (
-    <div>
+    <>
       {/* input label which has event handler defined in parent component */}
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" value={search} onChange={onSearch} />
-    </div>
+    </>
   )
 }
 
+/*********************************************************************************** */
 
 // List Component
 // use object destructuring in
@@ -101,6 +108,8 @@ const List = ({ list }) => {
   );
 }
 
+/*********************************************************************************** */
+
 // List Item
 // note object destructuring in function
 // signature
@@ -116,5 +125,7 @@ const Item = ({ title, url, author, num_comments, points}) => {
     </li>
   )
 }
+
+/*********************************************************************************** */
 
 export default App;
