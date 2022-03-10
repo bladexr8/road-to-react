@@ -64,9 +64,8 @@ const  App = () => {
     { data: [], isLoading: false, isError: false }
   );
 
-  // async data load
-  React.useEffect(() => {
-
+  // memoized handler (useCallback hook)
+  const handleFetchStories = React.useCallback(() => {
     if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
@@ -82,7 +81,12 @@ const  App = () => {
     .catch(() => {
       dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     })
-  },[searchTerm]);
+  }, [searchTerm]);
+
+  // async data load
+  React.useEffect(() => {
+    handleFetchStories();    
+  },[handleFetchStories]);
 
 
   // React useEffect hook to persist last
