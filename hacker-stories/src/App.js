@@ -67,9 +67,11 @@ const  App = () => {
   // async data load
   React.useEffect(() => {
 
+    if (!searchTerm) return;
+
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(`${API_ENDPOINT}react`)
+    fetch(`${API_ENDPOINT}${searchTerm}`)
       .then((response) => response.json())
       .then((result) => {
         dispatchStories({
@@ -80,7 +82,7 @@ const  App = () => {
     .catch(() => {
       dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     })
-  },[]);
+  },[searchTerm]);
 
 
   // React useEffect hook to persist last
@@ -99,12 +101,6 @@ const  App = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-
-  // filter stories based on search term entered
-  // in Search component
-  const searchedStories = stories.data.filter((story) => {
-    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
-  })
 
   return (
     <div>
@@ -128,7 +124,7 @@ const  App = () => {
       {stories.isLoading ? (
         <p>Loading...</p>
       ) : (
-        <List list={searchedStories} />
+        <List list={stories.data} />
       )}
 
     </div>
