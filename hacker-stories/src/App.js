@@ -66,21 +66,22 @@ const  App = () => {
   );
 
   // memoized handler (useCallback hook)
-  const handleFetchStories = React.useCallback(() => {
+  const handleFetchStories = React.useCallback(async () => {
     if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    axios.get(`${API_ENDPOINT}${searchTerm}`)
-      .then((result) => {
-        dispatchStories({
-          type: 'STORIES_FETCH_SUCCESS',
-          payload: result.data.hits,
-        })
-    })
-    .catch(() => {
-      dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
-    })
+    try {
+      const result = await axios.get(`${API_ENDPOINT}${searchTerm}`)
+
+      dispatchStories({
+        type: 'STORIES_FETCH_SUCCESS',
+        payload: result.data.hits,
+      });
+    } catch {
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
+    }
+
   }, [searchTerm]);
 
   // async data load
