@@ -26,12 +26,29 @@ const  App = () => {
   
   ];
 
+  // async loading of stories
+  const getAsyncStories = () => {
+    return new Promise((resolve) => {
+      setTimeout(
+        () => resolve({ data: { stories: initialStories }}),
+        2000
+      )
+    });
+  }
+
   // state property and setter function
   // using React useState() hook
   const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
 
   // stories to render using state
-  const [stories, setStories] = React.useState(initialStories);
+  const [stories, setStories] = React.useState([]);
+
+  // async data load
+  React.useEffect(() => {
+    getAsyncStories().then((result) => {
+      setStories(result.data.stories);
+    })
+  },[]);
 
 
   // React useEffect hook to persist last
