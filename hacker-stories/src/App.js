@@ -20,7 +20,7 @@ const list = [
 
 ];
 
-function App() {
+const  App = () => {
   return (
     <div>
       <h1>
@@ -41,21 +41,27 @@ function App() {
 }
 
 // Search Component
-function Search() {
+const Search = () => {
+
+  // handle text input
+  const handleChange = (event) => {
+    console.log(event);
+  }
+
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      <input id="search" type="text" onChange={handleChange} />
     </div>
   )
 }
 
 
 // List Component
-function List() {
+const List = () => {
   return (
       <ul>
-        {list.map(function (item) {
+        {list.map((item) => {
           return (
             <li key={item.objectID}>
               <span>
