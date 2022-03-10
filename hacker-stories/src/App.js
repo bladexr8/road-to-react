@@ -58,7 +58,11 @@ const  App = () => {
         My Hacker Stories
       </h1>
 
-      <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel 
+        id="search"
+        label="Search"
+        value={searchTerm} 
+        onInputChange={handleSearch} />
 
       <hr />
 
@@ -74,17 +78,18 @@ const  App = () => {
 /*********************************************************************************** */
 
 // Search Component
-const Search = (props) => {
-
-  // use object destructuring on props
-  const { search, onSearch } = props;
+const InputWithLabel = ({ id, label, value, type = 'text', onInputChange }) => {
 
   // return a React Fragment
   return (
     <>
       {/* input label which has event handler defined in parent component */}
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" value={search} onChange={onSearch} />
+      <label htmlFor={id}>{label} </label>
+      &nbsp;
+      <input id={id} 
+        type={type} 
+        value={value} 
+        onChange={onInputChange} />
     </>
   )
 }
