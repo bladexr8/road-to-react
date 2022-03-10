@@ -27,13 +27,33 @@ function App() {
         My Hacker Stories
       </h1>
 
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      <Search />
 
       <hr />
 
       {/* render the list here */}
       {/* and by the way: that's how you do comments in JSX */}
+
+      <List />
+    
+    </div>
+  );
+}
+
+// Search Component
+function Search() {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" />
+    </div>
+  )
+}
+
+
+// List Component
+function List() {
+  return (
       <ul>
         {list.map(function (item) {
           return (
@@ -46,10 +66,9 @@ function App() {
               <span> {item.points}</span>
               
             </li>
-          )
+          );
         })}
       </ul>
-    </div>
   );
 }
 
