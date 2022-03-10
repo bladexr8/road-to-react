@@ -24,7 +24,7 @@ const  App = () => {
 
   // state property and setter function
   // using React useState() hook
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState('React');
 
   // handler for when a search term is entered
   const handleSearch = (event) => {
@@ -43,7 +43,7 @@ const  App = () => {
         My Hacker Stories
       </h1>
 
-      <Search onSearch={handleSearch} />
+      <Search search={searchTerm} onSearch={handleSearch} />
 
       <hr />
 
@@ -63,7 +63,7 @@ const Search = (props) => {
     <div>
       {/* input label which has event handler defined in parent component */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={props.onSearch} />
+      <input id="search" type="text" value={props.search} onChange={props.onSearch} />
     </div>
   )
 }
