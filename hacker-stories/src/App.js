@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 // API Endpoint for Hacker News Stories
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
@@ -70,12 +71,11 @@ const  App = () => {
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(`${API_ENDPOINT}${searchTerm}`)
-      .then((response) => response.json())
+    axios.get(`${API_ENDPOINT}${searchTerm}`)
       .then((result) => {
         dispatchStories({
           type: 'STORIES_FETCH_SUCCESS',
-          payload: result.hits,
+          payload: result.data.hits,
         })
     })
     .catch(() => {
