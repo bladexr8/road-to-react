@@ -22,45 +22,48 @@ const  App = () => {
   
   ];
 
+  // state property and setter function
+  // using React useState() hook
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  // handler for when a search term is entered
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // filter stories based on search term entered
+  // in Search component
+  const searchedStories = stories.filter((story) => {
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
+  })
+
   return (
     <div>
       <h1>
         My Hacker Stories
       </h1>
 
-      <Search />
+      <Search onSearch={handleSearch} />
 
       <hr />
 
       {/* render the list here */}
       {/* and by the way: that's how you do comments in JSX */}
 
-      <List list={stories} />
+      <List list={searchedStories} />
     
     </div>
   );
 }
 
 // Search Component
-const Search = () => {
-
-  // state property and setter function
-  // using React useState() hook
-  const [searchTerm, setSearchTerm] = React.useState('');
-
-  // handle text input
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-  }
+const Search = (props) => {
 
   return (
     <div>
+      {/* input label which has event handler defined in parent component */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
-
-      <p>
-        Searching for <strong>{searchTerm}</strong>
-      </p>
+      <input id="search" type="text" onChange={props.onSearch} />
     </div>
   )
 }
