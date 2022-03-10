@@ -59,23 +59,30 @@ const  App = () => {
 // Search Component
 const Search = (props) => {
 
+  // use object destructuring on props
+  const { search, onSearch } = props;
+
   return (
     <div>
       {/* input label which has event handler defined in parent component */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" value={props.search} onChange={props.onSearch} />
+      <input id="search" type="text" value={search} onChange={onSearch} />
     </div>
   )
 }
 
 
 // List Component
-const List = (props) => {
+// use object destructuring in
+// function signature
+// note use of spread operator
+// to pass item values
+const List = ({ list }) => {
   return (
       <ul>
-        {props.list.map((item) => {
+        {list.map((item) => {
           return (
-            <Item key={item.objectID} item={item} />
+            <Item key={item.objectID} {...item} />
           )          
         })}
       </ul>
@@ -83,15 +90,17 @@ const List = (props) => {
 }
 
 // List Item
-const Item = (props) => {
+// note object destructuring in function
+// signature
+const Item = ({ title, url, author, num_comments, points}) => {
   return (
     <li>
       <span>
-        <a href={props.item.url}>{props.item.title}</a>
+        <a href={url}>{title}</a>
       </span>
-      <span> {props.item.author}</span>
-      <span> {props.item.num_comments}</span>
-      <span> {props.item.points}</span>              
+      <span> {author}</span>
+      <span> {num_comments}</span>
+      <span> {points}</span>              
     </li>
   )
 }
